@@ -69,12 +69,29 @@ int main(void)
 	// Print Current OGL Version:
 	cout << "OpenGL Version: " << glGetString(GL_VERSION) << endl;
 
-	// Vertices for Hello Triangle!
+	// Vertices for Rectangle!
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f
+		 0.5f,  0.5f, 0.0f,	// top right
+		 0.5f, -0.5f, 0.0f,	// bottom right
+		-0.5f, -0.5f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f	// top left
 	};
+
+	// Creating EBO for Rectangle:
+	unsigned int indices[] = { // Start from 0!
+		0, 1, 3,	// first triangle
+		1, 2, 3		// second triangle
+	};
+
+	// EBO:
+	unsigned int EBO;
+	glGenBuffers(1, &EBO);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	// Creating Vertex Buffer Objects:
 	unsigned int VBO;
@@ -147,9 +164,15 @@ int main(void)
 	// copy vertices array in a buffer for OpenGL to use:
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	// copy index array element buffer for OpenGL:
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	// set vertex attribute pointers:
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	// WIREFRAME MODE:
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	/* RENDER LOOP */
 	while (!glfwWindowShouldClose(window))
@@ -161,12 +184,14 @@ int main(void)
 		// Draw Object:
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
 		// Swaps the color buffer (contains color values for each pixel in GLFW Window
 		glfwSwapBuffers(window);
 		// Checks for triggered events (keyboard, mouse movements, etc.)
 		glfwPollEvents();
+
 	}
 
 	glfwTerminate();
@@ -177,7 +202,9 @@ int main(void)
 void ProcessInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
 		glfwSetWindowShouldClose(window, true);
+	}
 }
 
 /* GLFW: Whenever the window size changes, by the OS or the user, this function will execute: */
