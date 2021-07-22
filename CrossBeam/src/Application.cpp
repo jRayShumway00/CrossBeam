@@ -13,7 +13,7 @@ static unsigned int CompileShader(unsigned int type, const std::string& source)
     /* ERROR HANDLING */
     int result;
     glGetShaderiv(id, GL_COMPILE_STATUS, &result); // i = integer, v = vector (pointer)
-    
+
     // Check if result is false:
     if (result == GL_FALSE)
     {
@@ -42,7 +42,7 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
     glAttachShader(program, fs); // Attach the fragmentShader
     glLinkProgram(program); // Link the program var.
 
-    
+
     /* Can Be Removed if needed. */
     glDetachShader(program, vs); // Shader has been linked so we can detach it.
     glDetachShader(program, fs); // Shader has been linked so we can detach it.
@@ -132,6 +132,8 @@ int main(void)
 
         /* Render the triangle primitive from the array data! */
         glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
