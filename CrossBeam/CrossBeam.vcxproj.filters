@@ -21,5 +21,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\VertexShader.shader" />
+    <None Include="res\shaders\FragmentShader.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\headers\BasicShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

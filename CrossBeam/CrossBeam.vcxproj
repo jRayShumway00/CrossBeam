@@ -25,7 +25,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\shaders\FragmentShader.shader" />
     <None Include="res\shaders\VertexShader.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\headers\BasicShader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
